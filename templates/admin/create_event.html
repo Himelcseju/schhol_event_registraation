@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% block main %}
+  <section class="card">
+    <h2>Create Event</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <form method="post" action="{{ url_for('admin_create_event') }}" class="form one-col">
+      <label for="event_name">Event Name</label>
+      <input type="text" id="event_name" name="event_name" required>
+      <label for="description">Description (optional)</label>
+      <textarea id="description" name="description" rows="3"></textarea>
+      <label for="event_date">Event Date</label>
+      <input type="date" id="event_date" name="event_date">
+      <label for="base_fee">Base Fee (৳)</label>
+      <input type="number" id="base_fee" name="base_fee" min="0" value="500">
+      <label class="checkbox-label">
+        <input type="checkbox" name="is_active" value="1" checked> Set as active event (shown on student dashboard)
+      </label>
+      <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Create Event</button>
+    </form>
+  </section>
+{% endblock %}

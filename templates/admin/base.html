@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin – {{ school_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-body">
+  <header class="app-header admin-header">
+    <a href="{{ url_for('admin_dashboard') }}" class="header-logo-link">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ school_name }}" class="header-logo header-logo-admin">
+    </a>
+    <span class="admin-badge">Admin</span>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('admin_create_event') }}">Create Event</a>
+      <a href="{{ url_for('admin_students') }}">Students</a>
+      <a href="{{ url_for('admin_registrations') }}">Registrations</a>
+      <a href="{{ url_for('admin_logout') }}">Logout</a>
+    </nav>
+  </header>
+  <main class="main one-col main-admin">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block main %}{% endblock %}
+  </main>
+  <footer class="app-footer">
+    <a href="https://www.bengalconnect.org/" target="_blank" rel="noopener noreferrer">Developed by Bengal Connect</a>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

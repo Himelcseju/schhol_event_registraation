@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block main %}
+  <section class="card">
+    <h2>Registrations</h2>
+    <form method="get" action="{{ url_for('admin_registrations') }}" class="form filter-form">
+      <label for="event_id">Filter by event</label>
+      <select id="event_id" name="event_id" onchange="this.form.submit()">
+        <option value="">All events</option>
+        {% for e in events %}
+        <option value="{{ e.id }}" {% if selected_event_id == e.id %}selected{% endif %}>{{ e.event_name }}</option>
+        {% endfor %}
+      </select>
+    </form>
+    {% if registrations %}
+    <ul class="admin-list">
+      {% for r in registrations %}
+      <li class="admin-reg-row">
+        <span>
+          <strong>{{ r.full_name }}</strong> ({{ r.roll_no }}) – {{ r.event_name }} – ৳{{ r.total_amount }}
+          {% if r.txn_no %}<span class="reg-txn">TXN: {{ r.txn_no }}</span>{% endif %}
+          <span class="reg-bkash">Sent to: <strong>{% if r.get('bkash_to') %}{{ r.bkash_to|title }}{% else %}—{% endif %}</strong></span>
+          <span class="reg-status reg-status-{{ (r.status or '')|lower }}">{{ r.status }}</span>
+        </span>
+        <span class="muted">{{ r.created_at }}</span>
+        {% if r.status == 'REGISTERED' %}
+        <form method="post" action="{{ url_for('admin_confirm_registration', reg_id=r.id) }}" class="confirm-form">
+          <input type="hidden" name="event_id" value="{{ selected_event_id or '' }}">
+          <button type="submit" class="btn btn-small btn-confirm"><i class="fa-solid fa-check"></i> Confirm</button>
+        </form>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">No registrations for this selection.</p>
+    {% endif %}
+  </section>
+{% endblock %}

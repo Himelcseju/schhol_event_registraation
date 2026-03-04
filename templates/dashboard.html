@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body_class %}page-home{% endblock %}
+{% block body_extra %}
+<div class="home-cover" style="background-image: url('{{ url_for('static', filename='cover_page.jpg') }}');"></div>
+{% endblock %}
+{% block main %}
+  {% if event %}
+  <section class="card event-card event-card-lucrative">
+    <div class="event-card-inner">
+      <p class="event-card-label">Upcoming Event</p>
+      <h2 class="event-card-title">{{ event.event_name }}</h2>
+      {% if event.description %}
+      <p class="event-card-desc">{{ event.description }}</p>
+      {% endif %}
+      <div class="event-card-meta">
+        <span class="event-meta-item">
+          <span class="event-meta-icon">📅</span>
+          <span>{{ event.event_date }}</span>
+        </span>
+        <span class="event-meta-item">
+          <span class="event-meta-icon">৳</span>
+          <span>Fee ৳{{ event.base_fee }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="event-card-actions">
+      <a href="{{ url_for('register_start') }}" class="btn btn-primary btn-block"><i class="fa-solid fa-user-plus"></i> Register now</a>
+    </div>
+  </section>
+
+  <section class="card card-members-link">
+    <h3 class="card-members-title">Registered Members</h3>
+    <p class="card-members-desc">View the list of registered members for this event.</p>
+    <a href="{{ url_for('event_members', event_id=event.id) }}" class="btn btn-secondary btn-block">
+      <i class="fa-solid fa-list"></i> View registered members ({{ members_count }})
+    </a>
+  </section>
+  {% else %}
+  <section class="card">
+    <p>No active event at the moment. Check back later.</p>
+  </section>
+  {% endif %}
+{% endblock %}

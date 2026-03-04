@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block main %}
+  <section class="card">
+    <h2>Admin Dashboard</h2>
+    <p class="muted">Create events, view registrations, manage students.</p>
+    <div class="admin-actions">
+      <a href="{{ url_for('admin_create_event') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create Event</a>
+      <a href="{{ url_for('admin_students') }}" class="btn btn-secondary"><i class="fa-solid fa-users"></i> Students</a>
+      <a href="{{ url_for('admin_registrations') }}" class="btn btn-secondary"><i class="fa-solid fa-list-check"></i> View Registrations</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Events</h3>
+    {% if events %}
+    <ul class="admin-list">
+      {% for e in events %}
+      <li>
+        <strong>{{ e.event_name }}</strong>
+        — {{ e.event_date or 'No date' }}
+        — ৳{{ e.base_fee }}
+        {% if e.is_active %}<span class="badge active">Active</span>{% else %}<span class="badge">Inactive</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">No events yet. <a href="{{ url_for('admin_create_event') }}">Create one</a>.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h3>Recent Registrations</h3>
+    {% if registrations %}
+    <ul class="admin-list">
+      {% for r in registrations %}
+      <li>{{ r.full_name }} ({{ r.roll_no }}) – {{ r.event_name }} – ৳{{ r.total_amount }} – {{ r.status }}</li>
+      {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('admin_registrations') }}">View all registrations</a></p>
+    {% else %}
+    <p class="muted">No registrations yet.</p>
+    {% endif %}
+  </section>
+{% endblock %}

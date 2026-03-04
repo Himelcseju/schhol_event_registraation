@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login – {{ school_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="app-header">
+    <a href="{{ url_for('admin_login') }}" class="header-logo-link">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ school_name }}" class="header-logo">
+    </a>
+    <span class="admin-badge">Admin</span>
+  </header>
+  <main class="main one-col">
+    <section class="card">
+      <h2>Admin Login</h2>
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <form method="post" action="{{ url_for('admin_login') }}" class="form one-col">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+        <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      </form>
+    </section>
+  </main>
+  <footer class="app-footer">
+    <a href="https://www.bengalconnect.org/" target="_blank" rel="noopener noreferrer">Developed by Bengal Connect</a>
+  </footer>
+</body>
+</html>

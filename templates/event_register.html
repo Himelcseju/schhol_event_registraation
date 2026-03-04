@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block main %}
+  <section class="card">
+    <h2>Event Registration</h2>
+    <p class="muted">Event: {{ event.event_name }}</p>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+    <div class="readonly-details">
+      <h3>Your Details</h3>
+      <p><strong>Name:</strong> {{ student.full_name }}</p>
+      <p><strong>Roll:</strong> {{ student.student_id }}</p>
+      <p><strong>Batch:</strong> {{ student.batch_name or '—' }}</p>
+    </div>
+
+    <form method="post" action="{{ url_for('event_register', event_id=event.id) }}" class="form one-col" id="regForm">
+      <p class="base-amount">Base Amount: ৳{{ event.base_fee }}</p>
+      <p class="site-fee-amount">Site Maintenance Donation: ৳<span id="siteFeeDisplay">{{ site_fee }}</span> <em>(included)</em></p>
+
+      <label for="extra_amount">Extra Help Amount (Optional)</label>
+      <input type="number" id="extra_amount" name="extra_amount" min="0" value="0" step="1">
+
+      <p class="payment-note">Please pay the money to the bKash account <strong>FAISAL: 01737339839</strong> or <strong>GUDDU: 01749995222</strong></p>
+      <label for="bkash_to">Sent to which number? <span class="required">*</span></label>
+      <select id="bkash_to" name="bkash_to" required>
+        <option value="">— Select —</option>
+        <option value="faisal">FAISAL (01737339839)</option>
+        <option value="guddu">GUDDU (01749995222)</option>
+      </select>
+      <label for="txn_no">TXN ID (SEE UR MOBILE MSG TrxId) <span class="required">*</span></label>
+      <input type="text" id="txn_no" name="txn_no" placeholder="e.g. 8X1A2B3C4D" required autocomplete="off">
+
+      <p class="total-line">
+        <strong>Total: ৳<span id="totalDisplay">{{ event.base_fee + site_fee }}</span></strong>
+      </p>
+      <input type="hidden" id="base_amount" value="{{ event.base_fee }}">
+      <input type="hidden" id="site_fee" value="{{ site_fee }}">
+
+      <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-circle-check"></i> CONFIRM REGISTRATION</button>
+    </form>
+  </section>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='register.js') }}"></script>
+{% endblock %}

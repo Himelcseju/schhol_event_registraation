@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block main %}
+  <section class="card">
+    <h2>Create Your Profile</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <form method="post" action="{{ url_for('create_profile') }}" class="form one-col" enctype="multipart/form-data">
+      {% set fd = form_data or {} %}
+      <label for="student_id">Student ID / Roll No <span class="required">*</span></label>
+      <input type="text" id="student_id" name="student_id" required
+             pattern="[0-9]+" title="Numbers only" maxlength="20"
+             value="{{ fd.get('student_id', student_id_prefill) }}">
+      <label for="full_name">Full Name <span class="required">*</span></label>
+      <input type="text" id="full_name" name="full_name" required value="{{ fd.get('full_name', '') }}">
+      <label for="nickname">Nickname (known by your batchmates)</label>
+      <input type="text" id="nickname" name="nickname" placeholder="optional" value="{{ fd.get('nickname', '') }}">
+      <label for="email">Email <span class="required">*</span></label>
+      <input type="email" id="email" name="email" required value="{{ fd.get('email', '') }}">
+      <label for="phone">Phone / Mobile <span class="required">*</span></label>
+      <input type="tel" id="phone" name="phone" required placeholder="11 digits, e.g. 01712345678" value="{{ fd.get('phone', '') }}">
+      <label for="baria_address">B. Baria address <span class="required">*</span></label>
+      <input type="text" id="baria_address" name="baria_address" required value="{{ fd.get('baria_address', '') }}">
+      <label for="current_address">Current Address <span class="required">*</span></label>
+      <input type="text" id="current_address" name="current_address" required value="{{ fd.get('current_address', '') }}">
+      <label for="profession">Profession</label>
+      <input type="text" id="profession" name="profession" placeholder="optional" value="{{ fd.get('profession', '') }}">
+      <label for="organization_name">Organization Name</label>
+      <input type="text" id="organization_name" name="organization_name" placeholder="optional" value="{{ fd.get('organization_name', '') }}">
+      <label for="blood_group">Blood Group <span class="required">*</span></label>
+      <input type="text" id="blood_group" name="blood_group" placeholder="e.g. A+" required maxlength="5" value="{{ fd.get('blood_group', '') }}">
+      <label for="batch_id">Batch <span class="required">*</span></label>
+      <select id="batch_id" name="batch_id" required>
+        <option value="">Select batch</option>
+        {% for b in batches %}
+        <option value="{{ b.id }}" {% if fd.get('batch_id')|string == b.id|string or (not fd and default_batch_id is defined and b.id == default_batch_id) %}selected{% endif %}>{{ b.batch_name }}</option>
+        {% endfor %}
+      </select>
+      <label for="photo" class="form-label-photo">Your photo (optional)</label>
+      <input type="file" id="photo" name="photo" accept="image/png,image/jpeg,image/jpg,image/gif" class="form-input-file">
+      <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-check"></i> SAVE & CONTINUE</button>
+    </form>
+  </section>
+{% endblock %}

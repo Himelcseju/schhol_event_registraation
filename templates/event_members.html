@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block main %}
+  <section class="card event-members-card">
+    <h2 class="members-title">Registered Members</h2>
+    <p class="members-subtitle">{{ event.event_name }}</p>
+    <p class="members-total">Total: {{ total_count }} member{{ 's' if total_count != 1 else '' }}</p>
+    <a href="{{ url_for('dashboard') }}" class="link-back link-back-top">← Back to event</a>
+
+    {% if members %}
+    <div class="members-table-wrap">
+      <table class="members-table">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Mobile No</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in members %}
+          <tr>
+            <td class="member-photo">
+              {% if m.get('photo') or m.get('student_photo') %}
+              <img src="{{ url_for('static', filename=m.get('photo') or m.get('student_photo')) }}" alt="{{ m.full_name }}" class="member-thumb">
+              {% else %}
+              <span class="no-photo">—</span>
+              {% endif %}
+            </td>
+            <td class="member-name">{{ m.full_name }}</td>
+            <td class="member-phone">{{ m.phone or '—' }}</td>
+            <td><span class="member-status member-status-{{ (m.status or '')|lower }}">{% if (m.status or '')|upper in ('CONFIRMED', 'PAID') %}Confirmed{% elif (m.status or '')|upper == 'REGISTERED' %}Registered{% else %}{{ m.status or '—' }}{% endif %}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="members-empty">No registrations yet for this event.</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-block btn-back-dash"><i class="fa-solid fa-arrow-left"></i> Back to event</a>
+  </section>
+{% endblock %}
