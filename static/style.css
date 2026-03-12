@@ -759,11 +759,20 @@ body.page-home .app-footer {
   color: var(--muted);
 }
 
+/* Status column: ensure "Confirmed" etc. show fully on desktop */
+.members-table th:nth-child(4),
+.members-table td:nth-child(4) {
+  min-width: 100px;
+  white-space: nowrap;
+}
+
 .member-status {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .member-status-registered {
